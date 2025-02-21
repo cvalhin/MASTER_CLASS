@@ -20,10 +20,10 @@ is associated with which sample.
 So all we need for DESEQ2 is input counts and colData. We already got our counts in order so lets load those!
 ```{r loading counts objects}
 
-load("results/count_files.RData", verbose = T)
+load("Results/count_files.RData", verbose = T)
 
 #IMPORTANT Raw counts file
-counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/good_class_RNAseq/pipeline_output/star_salmon/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
+counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/data/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
 
 # Remove gene name column
 counts_matrix <-counts_matrix %>% 
@@ -122,7 +122,7 @@ deseq_samples$replicate <- factor(deseq_samples$replicate)
 # Nice let's save our work
 ```{r saving sample sheet}
 
-save(deseq_samples, counts_matrix, file = "results/deseq_samples.RData")
+save(deseq_samples, counts_matrix, file = "Results/deseq_samples.RData")
 
 ```
 # Note 
