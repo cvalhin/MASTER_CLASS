@@ -21,8 +21,8 @@ library(ggplot2)
 ```
 
 ```{r loading data}
-load("../05_RNAseq_in_R_studio/results/count_files.RData", verbose = T)
-load("../05_RNAseq_in_R_studio/results/deseq_samples.RData", verbose = T)
+load("../05_RNAseq_in_R_studio/Results/count_files.RData", verbose = T)
+load("../05_RNAseq_in_R_studio/Results/deseq_samples.RData", verbose = T)
 ```
 
 # Long mouse dox time course DDS
@@ -143,6 +143,7 @@ nrow(filtered_res_0_df_2)
 
 # Interesting this is now only 42 genes !! 
 # That is a special number :)
+#Ideas on what to do for leading own project: make plots of what changes if the changes are less or more than 2 fold. Line used to calculate this:  abs(log2FoldChange) > 1)
 
 ```
 
@@ -153,9 +154,9 @@ We can extract the gene names and then do gene ontology
 ```{r extracting sig genes at P <0.05 and LFC > abs(1)}
 
 # printing out the gene_symbol column 
-cool_genes <- cat(paste(filtered_res_0_df_2$gene_symbol, collapse = "\n"))
+cool_genes <- cat(paste(filtered_res_0_df_2$gene_name, collapse = "\n"))
 
-cool_genes_12 <- as.data.frame(filtered_res_0_df_2$gene_symbol, collapse = "\n")
+cool_genes_12 <- as.data.frame(filtered_res_0_df_2$gene_name, collapse = "\n")
 
 # copy and paste into EnrichR 
 #https://maayanlab.cloud/Enrichr/

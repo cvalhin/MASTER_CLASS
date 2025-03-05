@@ -21,6 +21,7 @@ library(pheatmap)
 library(textshape)
 library(Rcpp)
 library(DESeq2)
+library(matrixStats)
 ```
 
 
@@ -39,9 +40,14 @@ https://www.rna-seqblog.com/rpkm-fpkm-and-tpm-clearly-explained/
 ```{r reading in TPM}
 
 # reading in table TPM
-TPM <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/data/results/star_salmon/salmon.merged.gene_tpm.tsv", header=TRUE, row.names=1)
+TPM <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/data/salmon.merged.gene_tpm.tsv", header=TRUE, row.names=1)
 
 view(TPM)
+
+#Remove the gene_name column
+TPM <- TPM %>% 
+  select(-gene_name)
+
 # Ok so we can see that we are missing our gene_names but have gene_id and a TPM value for each gene across each timepoint
 # NOTE: rownames are gene_id
 
@@ -81,12 +87,13 @@ were originally made.
 ```{r Distibution of TPM values }
 
 #first the distribution of TPM
-hist(TPM_not_zero$WT_0_R1, xlim = c(0,300), breaks = 1000)
+hist(TPM_not_zero$WT_0_1, xlim = c(0,100), breaks = 1000)
 # weird we still see a lot of small values (e.g., 0.2314). let's filter our TPM object differently
 
 # First some cleaning up
 # Moving gene_id column back to rownames
 view(TPM)
+#for the rownames in the TPM put a gene_id column to later remove the gene_id column 
 row.names(TPM) <- TPM$gene_id
 view(TPM)
 
@@ -101,6 +108,8 @@ view(TPM)
 # Let's filter to a row that adds up to at least 1
 TPM_filtered <- TPM[rowSums(TPM) > 1, ]
 
+?any
+
 # Let's check 
 any(rowSums(TPM_filtered) < 1)
 
@@ -109,13 +118,13 @@ any(rowSums(TPM) < 1)
 # Cool look like we are filtered to any row that adds up to at leat 1 tpm
 
 # Let's see if that histogram changed?
-hist(TPM_filtered$WT_0_R1, xlim = c(0,300), breaks = 1000)
+hist(TPM_filtered$WT_0_1, xlim = c(0,100), breaks = 1000)
 
 # Lets compare means 
-mean(TPM_filtered$WT_0_R1)
+mean(TPM_filtered$WT_0_1)
 
 # Now our non filtered mean
-mean(TPM_not_zero$WT_0_R1)
+mean(TPM_not_zero$WT_0_1)
 ```
 # Result: we see that in one sample the average is about 30-45 TPM
 That is for only one time point and replicate.
@@ -160,7 +169,7 @@ length(rowMeans(TPM_filtered)[rowMeans(TPM_filtered) < 1])
 # We could think of filtering those out too
 
 ```
-# Result: 8,333 genes have an average of TPM 1 across all samples.
+# Result: 8,687 genes have an average of TPM 1 across all samples.
 This might seem confusing since we filtered for a row sum greater than one.
 But a gene could be .1 TPM across 12 samples and the row would sum to greater than one.
 Thus, we have 8K+ cases where expression is super low in all samples.
@@ -176,14 +185,15 @@ Let's use this as an opportunity to explore for loops more too :)
 
 ```{r for loop to find average TPM for each time point }
 
+
 # First establish time point and replicate cols
 time_points <- c("0", "12", "24", "48", "96")
-replicates <- c("_R1", "_R2", "_R3")
+replicates <- c("_1", "_2", "_3")
 
 X_average_values <- list()
 for (tp in time_points) {
   # Subset the columns for the current time point and replicates
-  cols <- grep(paste0("WT_", tp, "_R"), colnames(TPM_filtered))
+  cols <- grep(paste0("WT_", tp, "_"), colnames(TPM_filtered))
   
   # Calculate the mean of the replicates for each row
   avg <- rowMeans(TPM_filtered[, cols])
@@ -223,7 +233,7 @@ library(matrixStats)
 # Let's establish our time points and replicates there in:
 # First establish time point and replicate cols
 time_points <- c("0", "12", "24", "48", "96")
-replicates <- c("_R1", "_R2", "_R3")
+replicates <- c("_1", "_2", "_3")
 
 ?rowSds
 # Initialize empty lists to store the results from the for loop
@@ -233,7 +243,7 @@ average_and_stddev_values <- list()
 # now each object into the for loop is "tp"
 for (tp in time_points) {
   # Subset the columns for the current time point and replicates
-  cols <- grep(paste0("WT_", tp, "_R"), colnames(TPM_filtered))
+  cols <- grep(paste0("WT_", tp, "_"), colnames(TPM_filtered))
   
   # Calculate the mean and standard deviation of the replicates for each row
   avg <- rowMeans(TPM_filtered[, cols])
@@ -249,9 +259,11 @@ for (tp in time_points) {
   average_and_stddev_values <- c(average_and_stddev_values, list(combined))
 }
 
+
 # Convert the list to a data frame
 average_and_stddev_values <- do.call(cbind, average_and_stddev_values)
 
+view(average_and_stddev_values)
 # Add column names for the time points
 colnames(average_and_stddev_values) <- paste0(rep(time_points, each = 2), c("_avg", "_sd"))
 

@@ -27,13 +27,13 @@ We now have results after all that hardwork - let's see what we see and start to
 
 # Loading our results from DESEQ for all time points
 ```{r loading our DESEQ2 results res_df}
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/time_point_res_df.RData")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/time_point_res_df.RData")
 ```
 
 
 # First let's filter to find genes that significantly changed across time points
 For this we will use the filter function in baseR
-
+#For this filtering steps, we are taking only the significant genes 
 
 ```{r filter time point to padj < 0.05}
 
@@ -119,6 +119,7 @@ hist(filtered_res_df_2$baseMean)
 
 # Let's change the X-axis
 hist(filtered_res_df_2$baseMean, xlim = c(0,1000), breaks = 1000)
+#basename is average abundance, in here we are asking: from the significantly expressed genes, which ones are highly abundant
 
 # Let's do the same for Pvalue
 hist(filtered_res_df_2$padj)
@@ -147,7 +148,7 @@ basemena_sig_genes <- median(filtered_res_df_2$baseMean)
 
 ?t.test
 t.test(res_df$baseMean, filtered_res_df_2$baseMean)
-
+#Are the genes that are regulated by dox, more abundant than all the genes in the cell? 
 # Cool it's a significant result :) !
 
 ```
@@ -165,7 +166,7 @@ as indexing and something we will do A LOT of :)
 ```{r meging counts with our sig genes - so we have counts table for all sig genes}
 
 # First we need to load our counts matrix
-counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/good_class_RNAseq/pipeline_output/star_salmon/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
+counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/data/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
 
 # Let's make sure our counts file is the right format
 view(counts_matrix)

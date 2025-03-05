@@ -21,7 +21,7 @@ library(ggplot2)
 ```{r loading counts objects}
 
 #IMPORTANT Raw counts file
-counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/04_RNAseq_Dox/01_Mouse_dox_wt/good_class_RNAseq/pipeline_output/star_salmon/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
+counts_matrix <- read.table("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/data/salmon.merged.gene_counts.tsv", header=TRUE, row.names=1)
 
 ```
 
@@ -44,9 +44,9 @@ view(g2s)
 # remove gene_name column
 
 counts_matrix <- counts_matrix[,-1]
-#also
-counts_matrix <- counts_matrix %>%
-  select(-gene_name)
+#or this command (do not run them last command twice)
+#counts_matrix <- counts_matrix %>%
+#  select(-gene_name)
 
 # Round counts to integer mode required for DESEQ2
 counts_integer <- round(counts_matrix)
@@ -57,7 +57,7 @@ View(counts_integer)
 
 # Loading Deseq_sample_sheet
 ```{r loading in sample sheet for DESEQ2}
-load("../05_RNAseq_in_R_studio/results/deseq_samples.RData", verbose = T)
+load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/results/deseq_samples.RData", verbose = T)
 view(deseq_samples)
 # oops that loaded a count matrix that isn't in integer -let's fix that
 counts_integer <- round(counts_matrix)
@@ -78,7 +78,7 @@ deseq_samples$replicate <- factor(deseq_samples$replicate)
 
 # Check ordering
   stopifnot(all(colnames(counts_integer) == rownames(deseq_samples$sample_id)))
-
+#taking colnames of countsmatrix and say, are they the same as rownames 
 # Nice our columns in the counts are the same as rows in sample_id
 
 ```
@@ -169,9 +169,10 @@ view(res_df)
 
 # saving results in res_df
 ```{r saving our results data frame}
-save(res_df, file = "results/time_point_res_df.RData")
+#Working directory: /scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/06_Differential_expression_analyses
+save(res_df, file = "../05_RNAseq_in_R_studio/Results/time_point_res_df.RData")
 # let's also save our DDS
-save(dds_time_point, file = "results/dds_time_point_mouse_long.RData")
+save(dds_time_point, file = "../05_RNAseq_in_R_studio/Results/dds_time_point_mouse_long.RData")
 ```
 
 # Nice we have all our results now let's go over what it all means :) !

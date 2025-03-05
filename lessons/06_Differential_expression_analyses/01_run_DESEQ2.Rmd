@@ -38,10 +38,10 @@ https://www.bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DES
 ```{r loading in counts and sample info}
 
 # /scratch/Shares/rinnclass/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/results
-load("../05_RNAseq_in_R_studio/results/deseq_samples.RData", verbose = T)
+load("../05_RNAseq_in_R_studio/Results/deseq_samples.RData", verbose = T)
 
 # NOte the write over for counts matrix and ordering of loading these two objects
-load("../05_RNAseq_in_R_studio/results/count_files.RData", verbose = T)
+load("../05_RNAseq_in_R_studio/Results/count_files.RData", verbose = T)
 
 ```
 
@@ -60,6 +60,8 @@ dds <- DESeqDataSetFromMatrix(countData = counts_filtered,
 # Ok let's make a dds !
 
 ```{r run DEseqDataSetFromMatrix }
+
+?DESeqDataSetFromMatrix #to see information about what the arguments are and what other ones you can use
 
 dds <- DESeqDataSetFromMatrix(countData = counts_filtered,
                               colData = deseq_samples,
