@@ -35,10 +35,10 @@ So take all of this with a grain of salt but is good to measure relative changes
 ```{r loading our RNAseq analysis data TPM & COUNTS}
 
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/TPM_results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/counts_results_DESEQ/DESEQ_results.rdata")
 
 ```
 
@@ -49,7 +49,7 @@ load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_
 hist(average_and_stddev_values$96_avg)
 # Oh no this doesn't work because of an "integer" value being indexed
 # This can be fixed easily by :
-hist(average_and_stddev_values$'96_avg', xlim = c(0,1000), ylim = c(0,1000), breaks = 1000)
+hist(average_and_stddev_values$'96_avg', xlim = c(1,1000), ylim = c(1,1000), breaks = 1000)
 # We can quickly see again that most values are very low and a long right tail on distribution of TPM values!
 ```
 
@@ -66,20 +66,22 @@ time_points <- names(average_and_stddev_values)[grep("avg", names(average_and_st
 average_and_stddev_values_2 <- rownames_to_column(average_and_stddev_values, var = "gene_id")
 
 # Melt the data frame to long format
-melt_tpm_df <- melt(average_and_stddev_values_2, measure.vars = time_points, value_name = "gene_id")
+#melt_tpm_df <- melt(average_and_stddev_values_2, measure.vars = time_points, value_name = "gene_id")
 
 # Cool we just made it a really long df (compare original and melt) -it's 5x longer
 # Note the same can be done with pivot longer
 pivot_longer_tpm_df <- average_and_stddev_values_2 %>% 
   pivot_longer(cols = all_of(time_points), names_to = 'Time', values_to = 'TPM')
+#we now have less columns
+
 
 # Now to plot:
-ggplot(melt_tpm_df, aes(x = value)) +
-  geom_histogram(bins = 50) +
-  facet_wrap(~ variable, scales = "free_x")+
-  xlim(0,1000) +
-  ylim(0,1000) +
-  theme("paperwhite")
+#ggplot(melt_tpm_df, aes(x = value)) +
+#  geom_histogram(bins = 50) +
+#  facet_wrap(~ variable, scales = "free_x")+
+#  xlim(0,1000) +
+#  ylim(0,1000) +
+#  theme("paperwhite")
 
 # or
 
@@ -127,18 +129,20 @@ sig_gene_tpm <- sig_gene_tpm %>%
 ```{r TPM plot of gene of interest}
 
 # Picking a favorite gene
-gene_up <- as.data.frame(c("Gm9045"))
+#Choose a gene of interest, I chose this one for quickness, I have to look at other candidates present in the sig_gene_tpm
+gene_up <- as.data.frame(c("Napsa"))
 
 names(gene_up) <- "gene_name"
 
 # indexing to just get values for this gene
-Gm9045_tpm <- sig_gene_tpm[sig_gene_tpm$gene_name %in% gene_up$gene_name, ]
+	
+Napsa_tpm <- sig_gene_tpm[sig_gene_tpm$gene_name %in% gene_up$gene_name, ]
 
 # now moving the character gene_name to rownames to won't interfere with numeric values
-rownames(Gm9045_tpm) <- Gm9045_tpm$gene_name
+rownames(Napsa_tpm) <- Napsa_tpm$gene_name
 
 # removing text column
-Gm9045_tpm <- Gm9045_tpm %>%
+Napsa_tpm <- Napsa_tpm %>%
   select(-gene_name) 
 
 # Ok this is typical data wrangling now let's plot !
@@ -154,15 +158,15 @@ We will do that next.
 
 # We now need to futher prepare our data :)
 # Let's get a variable for col names to plot
-avg_cols <- grep("_avg", names(Gm9045_tpm), value = TRUE)
+avg_cols <- grep("_avg", names(Napsa_tpm), value = TRUE)
 
-sd_cols <- grep("_sd", names(Gm9045_tpm), value = TRUE)
+sd_cols <- grep("_sd", names(Napsa_tpm), value = TRUE)
 
 # This is another way to "melt" or pivot longer
 plot_df <- data.frame(
   time = as.numeric(gsub("_avg", "", avg_cols)),
-  avg = unlist(Gm9045_tpm[avg_cols]),
-  sd = unlist(Gm9045_tpm[sd_cols])
+  avg = unlist(Napsa_tpm[avg_cols]),
+  sd = unlist(Napsa_tpm[sd_cols])
 )
 
 # NOW THE PLOT !
@@ -213,7 +217,7 @@ df_plot_genes <- df_plot_genes %>%
   ) %>%
   select(-WT)
 
-# Convert Time to numeric values
+# Convert Time to numeric values to be able to plot
 df_plot_genes$Time <- as.numeric(df_plot_genes$Time)
 
 # (4) Group by Time and calculate mean and std of TPM

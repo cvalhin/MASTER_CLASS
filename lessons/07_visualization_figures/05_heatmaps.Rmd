@@ -36,11 +36,10 @@ First let's load the data
 ```{r Loading data}
 
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/TPM_results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
-
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/counts_results_DESEQ/DESEQ_results.rdata")
 ```
 
 # (1) Cluster samples
@@ -62,6 +61,7 @@ log_tpm_matrix <- log2(TPM_filtered + 1)
 
 # Let's start with euclidean distance / similarity based on log2 TPM values of genes in TPM_filtered.
 distance_matrix <- dist(t(log_tpm_matrix), method = "euclidean")
+#t is to transform data, turn sideways
 
 # Now we use the function : HCLUST ! 
 # This performs the hierarchical clustering of each samples relationship
@@ -215,7 +215,7 @@ First, we need to load in our DDS from 0
 
 ```{r load dds for mouse long time course DESEQ2}
 # Loading DDS
-load("../06_Differential_expression_analyses/results/dds_time_point_mouse_long.RData", verbose = TRUE)
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/dds_time_point_mouse_long.RData", verbose = TRUE)
 
 # First Normalize counts (rlog) function in DESEQ2
 # This basically is rank counts normalized to std error in replicates.

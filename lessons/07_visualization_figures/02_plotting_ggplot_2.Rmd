@@ -11,6 +11,7 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(magrittr)
+library(dplyr)
 # install.packages("broom")
 library(broom)
 
@@ -20,10 +21,10 @@ library(broom)
 ```{r loading our RNAseq analysis data TPM & COUNTS}
 
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/TPM_results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/counts_results_DESEQ/DESEQ_results.rdata")
 
 ```
 
@@ -54,6 +55,7 @@ ggplot(filtered_res_df, aes(x = baseMean,
 # Now let's compare log2fc and lfcse
 ggplot(filtered_res_df, aes(x = log2FoldChange, 
                  y = lfcSE)) +
+#Shrinking of log values (shrunken change) 
   geom_point()+
   xlim(-5,5) +
   geom_density_2d() 
@@ -66,7 +68,7 @@ ggplot(filtered_res_df, aes(x = log2FoldChange,
   xlim(-5,5) +
   geom_point()
   
-
+#order matters in ggplot, this plot says it (above)
 # it's hard to see but in this case the contour is on the bottom
 #  -- subtle but important
 
@@ -146,7 +148,7 @@ summary(lm_fit_2)
 
 # let's convert the lm_fit data to a data_frame using tidy()
 # it's in the library broom:
-library(broom)
+
 lm_df <- tidy(lm_fit)
 lm_df
 # so much easier to read than summary :)
@@ -207,7 +209,7 @@ ggplot(filtered_res_df, aes(x = result_name,
                 )) +
   geom_point() +
   stat_summary(fun = "mean",
-               color = "red",
+               color = "yellow",
                shape = 1,
                size = 2)
 ```
@@ -232,7 +234,7 @@ ggplot(filtered_res_df, aes(x = pvalue,
                             y =padj, color = padj < 0.01)) +
   geom_point()+
   scale_x_continuous() +
-  scale_color_brewer(palette = "Set1") 
+  scale_color_brewer(palette = "Pastel2") 
 
 # scale_x_continious (same for y) is calling the scale layer specifically
 # We are giving it where to put values on X-axis      

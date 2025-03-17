@@ -14,15 +14,16 @@ library(readr)
 library(magrittr)
 library(tibble)
 library(dplyr)
+library(broom)
 
 ```
 # Load data
 ```{r loading our RNAseq analysis data TPM & COUNTS}
 # load TPM RESULTS: 
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/TPM_results/TPM_results.Rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/TPM_results/TPM_results.Rdata")
 
 # laod DESEQ2 results
-load("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/06_Differential_expression_analyses/results/counts_results_DESEQ/DESEQ_results.rdata")
+load("/scratch/Shares/rinnclass/MASTER_CLASS/STUDENTS/carolina/MASTER_CLASS/lessons/05_RNAseq_in_R_studio/Results/counts_results_DESEQ/DESEQ_results.rdata")
 ```
 
 # Summary of where we are at
@@ -172,7 +173,6 @@ ggplot(filtered_res_df, aes(x = log2FoldChange)) +
 
 # Let's make one more full plot with padj vs pvalue
 ```{r plotting values for linear regression on plot}
-library(broom)
 
 ggplot(filtered_res_df, aes(pvalue, padj)) +
   geom_point() +
@@ -193,7 +193,7 @@ ggplot(filtered_res_df, aes(pvalue, padj)) +
     )[1], 2)),
     parse = TRUE,
     color = "red",
-    size = 6
+    size = 3
   ) +
   ggtitle("Super cool linear regression?", subtitle = "pvalues are different than padj")
 
@@ -235,7 +235,7 @@ ggplot(filtered_res_df, aes(pvalue, padj)) +
         filtered_res_df
       )
     )[1], 2)),
-    parse = TRUE, color = "red", size = 6
+    parse = TRUE, color = "red", size = 3
   ) 
 
 ```

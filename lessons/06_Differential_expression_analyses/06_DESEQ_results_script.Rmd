@@ -167,14 +167,14 @@ any(rowSums(TPM) < 1)
 
 # Time and replicate values
 time_points <- c("0", "12", "24", "48", "96")
-replicates <- c("_R1", "_R2", "_R3")
+replicates <- c("_1", "_2", "_3")
 
 # initialize list for results
 average_and_stddev_values <- list()
 # now each object into the for loop is "tp"
 #for each one of the objects in time_points, calculate all these things!
 for (tp in time_points) {
-  cols <- grep(paste0("WT_", tp, "_R"), colnames(TPM_filtered))
+  cols <- grep(paste0("WT_", tp, "_"), colnames(TPM_filtered))
   avg <- rowMeans(TPM_filtered[, cols])
   std_dev <- apply(TPM_filtered[, cols], 1, sd)
   std_dev <- data.frame(std_dev)
