@@ -72,15 +72,17 @@ let's get more info with table to summary using tidy verse %>%
 
 table(seqnames(gencode_gr)) %>%
   head()
+
 # This is telling us how many features are associated with each chromosome.
 
 table(seqnames(gencode_gr)) %>% 
   summary()
+
 # this tells us how many features there are in the genome.
 
 # Let's find out how many features the mitochondrial chr has (22th level - mouse (20) has less chromosomes than humans (23)
-table(seqnames(gencode_gr))[22] 
-
+table(seqnames(gencode_gr))[22] #to see features in chr M total of 153 
+# features can be exons, start sites, etc 
 # we see this is the mitochondrial chromosome and has 153 elements
 
 ```
@@ -88,11 +90,12 @@ table(seqnames(gencode_gr))[22]
 # Indexing Granges (@elementMetadata$INDEXING)
 ```{R indexing GRanges}
 
-# we see a lot of good infromation in @elementMetadata -- let's index it.
+# we see a lot of good information in @elementMetadata -- let's index it.
 
 # let's see how many 'gene_id' values there are by indexing
 table(gencode_gr@elementMetadata$gene_id) %>% 
   head()
+
 # This tell us how many features are associated with each gene id.
 
 # NOTE gene_id is ensemble gene_id annotation. The (.) at the end of the number indicates which isoform of a gene.
@@ -109,7 +112,7 @@ table(gencode_gr@elementMetadata$transcript_name) %>%
 
 # it's basically memorization of what is a gene name or gene id 
 
-# if you wanted to look at this more expanisvely (instead of just head lines)
+# if you wanted to look at this more expansively (instead of just head lines)
 # you can make it into an object
 
 gencode_info <- table(gencode_gr@elementMetadata$gene_name) %>% 
@@ -134,6 +137,9 @@ gencode_gr_length <- data.frame("gene_id" = gencode_gr@elementMetadata$gene_id,
                            "width" = gencode_gr@ranges@width,
                            "chr" = gencode_gr@seqnames)
                            
+
+# To look at all the gene types that are present in that genome 
+table(gencode_gr_length$gene_type)
 ```
 
 # Let's save our gencode_gr and gencode_gr_length objects for the next lesson - and good book keeping!

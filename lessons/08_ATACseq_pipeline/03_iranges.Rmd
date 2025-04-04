@@ -68,6 +68,8 @@ ir1 <- IRanges(start = c(1,200, 1000), end = c(30, 299, 1200))
 # take a look
 ir1
 
+# Creating a range for hte regions you want to focus on, is good when you want to filter. For example, you can feed R with a bunch of data from different genomes, and with a range, you can ask to focus the data in those ranges instead of the whole genome 
+
 # we can use a lot of Iranges functions to look at what we just made
 start(ir1)
 end(ir1)
@@ -86,6 +88,7 @@ ir3 <- c(ir1, ir2)
 
 # take a look -- stacked on top
 ir3
+# Once the peaks overlap, what part of the inforamtion do you want. The parts tha overlap or not. 
 
 # The nice thing about IRanges as we can track values associated with each range
 # for example we may want to name these replicate 1 and replicate 2
@@ -123,7 +126,7 @@ https://stackoverflow.com/questions/21506724/how-to-plot-overlapping-ranges-with
 ir1 <- IRanges(start = c(1,200, 1000), end = c(30, 299, 1200))
 ir2 <- IRanges(start = c(17,100, 1100), end = c(49, 199, 1201))
 
-# union (Iranges function) 
+# union (Iranges function): is these two overlap, I am going to take the furthest start and the further end. 
 # note: forces the union even if not overlapping!
 ov1 <- union(ir1, ir2)
 ir1
