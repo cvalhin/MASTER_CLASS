@@ -25,8 +25,7 @@ source("../../util/00_our_first_function_lesson.R")
 
 # establishing peak path to the dir with MACS2 output peak files from NF_CORE ATACseq pipeline
 
-peak_path <- "<your_atac_pipeline_output_dir>/bwa/merged_library/macs2/broad_peak"
-# peak_path <- "/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak"
+ peak_path <- "/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak"
 
 # creating a file list also needed for import_peaks function to get sample name associated with file
 fl <- list.files(peak_path, full.names = TRUE, pattern = ".broadPeak")
@@ -40,6 +39,8 @@ my_peaks <- import_peaks(consensus_file_path = peak_path)
 
 # Nice so with a list of peak files and path to the folder we can load as many peak files as we need !
 num_peaks <- sapply(my_peaks, length) %>% as.data.frame
+#for each range I am going in and find the lenght and give it to me as a data frame
+
 view(num_peaks)
 
 # printing to compare later to filtered to cannonical chromosomes  
@@ -79,6 +80,7 @@ Let's create a handy function to overlap peaks!
 ```{r find_common_peaks function }
 
 # starting function named "find_common_peaks" parameter 
+
 find_common_peaks <- function(gr_list) {
   # Validate input
   if (!is.list(gr_list) || !all(sapply(gr_list, inherits, "GRanges"))) {
@@ -135,6 +137,7 @@ my_peaks <- import_peaks(consensus_file_path = peak_path)
 # test common_peaks function 
 common_peaks <- find_common_peaks(my_peaks)
 
+length(common_peaks)
 ```
 NICE !! In the future that is all you will have to run (5 lines of code !!)
 HINT: This is a good example of what your final .RMD could look like above - nice and clean!

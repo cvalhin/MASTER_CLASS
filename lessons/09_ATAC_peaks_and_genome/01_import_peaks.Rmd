@@ -26,13 +26,13 @@ To do this we need rtarcklayer to import peak files as GRanges so we can find ov
 ```{r}
 # reading in WT_0 ATACseq peak calls !
 
-WT_0_Peaks <- rtracklayer::import("../08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_WT_control_0_REP1.mLb.clN_peaks.broadPeak")
+WT_0_Peaks <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_WT_control_0_REP1.mLb.clN_peaks.broadPeak")
 
 # let's take a look at the data 
 view(WT_0_Peaks)
 
 # Now KO no dox (0 timepoint)
-KO_0_Peaks <- rtracklayer::import("../08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_KO_control_0_REP1.mLb.clN_peaks.broadPeak")
+KO_0_Peaks <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak/ESC_KO_control_0_REP1.mLb.clN_peaks.broadPeak")
 
 # Let's take a look at what information we have !
 view(KO_0_Peaks)
@@ -101,7 +101,7 @@ length(unique(ovf_chr@to))
 # now let's look at WT_0_Peaks
 length(unique(ovf_chr@from))
 # 53,827 peaks made up the 54,064 overlaps.
-
+#from is going to queary to subject 
 
 # Let's look at how many had multiple overlaps
 table(table(ovf_chr@from))
@@ -124,7 +124,7 @@ new tools for our kit.
 # This is very helpful in the long run to not have huge filepaths everywhere :)
 peak_path <- "/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak"
 
-# Now let's make a list of filepaths to each peak file -- "list.files"
+# Now let's make a list of file paths to each peak file -- "list.files"
 # we add a pattern parameter to just load .broadPeaks as there are many other types.
 
 fl <- list.files(peak_path, 
@@ -198,6 +198,8 @@ import_peaks <- function(consensus_file_path) {
 
 # Let's run our new custom function import_peaks
 my_peaks <- import_peaks(consensus_file_path = peak_path)
+
+View(my_peaks)
 
 # NICE we just imported all the peak files and names them - take a look!
 # Each row is a GRange object so this is a list of GRanges - so much packed in !

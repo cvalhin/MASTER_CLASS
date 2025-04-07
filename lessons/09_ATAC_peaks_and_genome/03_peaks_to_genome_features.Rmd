@@ -31,9 +31,8 @@ We are basically starting where we left off last lesson!
 
 ```{r create my_peaks GRange List using import_peaks custom function}
 
-# peak file "consensus_path" parameter of import_peaks function
-peak_path <- "<your_atac_pipeline_output_dir>/bwa/merged_library/macs2/broad_peak"
-#peak_path <- "/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak"
+
+peak_path <- "/scratch/Shares/rinnclass/MASTER_CLASS/lessons/08_ATACseq_pipeline/00_run_pipeline/00_pipeline_run/pipeline_run/bwa/merged_library/macs2/broad_peak"
 
 # make file list (fl)
 fl <- list.files(peak_path, full.names = TRUE, pattern = ".broadPeak")
@@ -62,6 +61,10 @@ We have done this before but will start from scratch to refresh:
 
 # Loading gencode genome annotation as GRanges (takes 5 min - will save at end)
 gencode_gr_mouse <- rtracklayer::import("/scratch/Shares/rinnclass/MASTER_CLASS/GENOMES/M25/gencode.vM25.annotation.gtf")
+
+#to look what types of seqeunces we have in this data 
+gencode_gr_mouse@elementMetadata@listData[["type"]]
+#to get there, go to the metadata matrix and select the table icon in the right of the 'type' row. This will type the the code line you need to index that colum and for it to be shown. In this case, that line is what is above of this comment.  
 
 # making subset to just gene objects:
 gencode_genes_mouse <- gencode_gr_mouse[gencode_gr_mouse$type == "gene"] 
