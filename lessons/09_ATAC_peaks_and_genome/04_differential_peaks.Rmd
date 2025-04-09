@@ -147,6 +147,7 @@ non_dox_gene_promoter_ov <- find_common_peaks(gr_list_gene_promoter_non_dox_ov)
 # 2178 peaks overlap gene promoters out of 16,312
 
 # Now find same gene_id in RNAseq resuts
+# It is saying: in the gene_ID column from my peak file, search the genes that match with the gene_id column in our filtered_res_df dataset from RNA seq 
 sig_rnaseq_atac_non_dox <- non_dox_gene_promoter_ov[non_dox_gene_promoter_ov$gene_id %in% filtered_res_df$gene_id]
 
 # how many genes overlap between RNAseq and ATACseq non-dox peaks!

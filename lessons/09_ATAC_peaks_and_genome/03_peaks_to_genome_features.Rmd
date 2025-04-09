@@ -109,6 +109,7 @@ Let's ask several questions to explore the data and learn some skills !
 # Question 1: How many common peaks overlap mRNA vs lincRNA promoters
 ```{r ATAC Peak Overlap lincRNA and mRNA promoters}
 
+
 lincrna_atac_ov <- findOverlaps(lincrna_gene_promoters, common_peaks)
 
 length(lincrna_gene_promoters)
